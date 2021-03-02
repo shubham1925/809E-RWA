@@ -1,4 +1,5 @@
 import taskplanning
+from termcolor import colored
 
 # Initialize robot at the home position
 taskplanning.go_home()
@@ -20,8 +21,8 @@ if taskplanning.blue_remaining <= 0:
     flag_blue = True
 
 # We will complete the kit in red, green blue order always
-
 while not(flag_red):
+    print(colored('Starting with red parts..', 'red'))
     taskplanning.move_to_bin()
     taskplanning.pick("red")
     taskplanning.move_to_tray()
@@ -34,6 +35,7 @@ while not(flag_red):
     taskplanning.go_home()
 
 while not(flag_green):
+    print(colored('Starting with green parts..', 'green'))
     taskplanning.move_to_bin()
     taskplanning.pick("green")
     taskplanning.move_to_tray()
@@ -44,6 +46,7 @@ while not(flag_green):
     taskplanning.go_home()
 
 while not(flag_blue):
+    print(colored('Starting with blue parts..', 'blue'))
     taskplanning.move_to_bin()
     taskplanning.pick("blue")
     taskplanning.move_to_tray()
@@ -55,5 +58,9 @@ while not(flag_blue):
 
 if flag_red and flag_green and flag_blue:
     taskplanning.environment["KitStatus"]["kit_complete"] = True
+
+print("Parts remaining in red bin: " + str(taskplanning.environment["PartsInBins"]["red_parts"]))
+print("Parts remaining in green bin: " + str(taskplanning.environment["PartsInBins"]["green_parts"]))
+print("Parts remaining in blue bin: " + str(taskplanning.environment["PartsInBins"]["blue_parts"]))
 
 print(taskplanning.environment.items())
