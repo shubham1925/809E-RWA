@@ -14,8 +14,6 @@ if red_remaining > red_in_bin or green_remaining > green_in_bin or blue_remainin
     print("Demand exceeds availability. Exiting..")
     exit()
 
-
-
 print(f"Red parts required: {red_remaining}")
 print(f"Green parts required: {green_remaining}")
 print(f"Blue parts required: {blue_remaining}")
@@ -160,7 +158,9 @@ def place(part_color):
     if part_color == "red":
         parts_already_present = environment.get("PartsInKit").get("red_in_kit")
     elif part_color == "green":
-        parts_already_present = environment.get("PartsInKit").get("red_in_kit")
+        parts_already_present = environment.get("PartsInKit").get("green_in_kit")
+    else:
+        parts_already_present = environment.get("PartsInKit").get("blue_in_kit")
 
     if gripper_condition_right == True and gripper_condition_left == True:
         # Both hands are grasping some part
@@ -170,7 +170,20 @@ def place(part_color):
             print(f"Parts of {part_color} remaining to be picked are: " + str(red_needed - parts_already_present - 2))
             global yet_to_go_red
             yet_to_go_red = red_needed - parts_already_present - 2
-            environment["RobotLocation"]["at_tray"] = True
+            environment["GripperStatus"]["gripper_left"] = False
+            environment["GripperStatus"]["gripper_left"] = False
+        elif part_color == "green":
+            environment["PartsInKit"]["green_in_kit"] = parts_already_present + 2
+            print(f"Parts of {part_color} remaining to be picked are: " + str(green_needed - parts_already_present - 2))
+            global yet_to_go_green
+            yet_to_go_green = green_needed - parts_already_present - 2
+            environment["GripperStatus"]["gripper_left"] = False
+            environment["GripperStatus"]["gripper_left"] = False
+        else:
+            environment["PartsInKit"]["blue_in_kit"] = parts_already_present + 2
+            print(f"Parts of {part_color} remaining to be picked are: " + str(blue_needed - parts_already_present - 2))
+            global yet_to_go_blue
+            yet_to_go_blue = blue_needed - parts_already_present - 2
             environment["GripperStatus"]["gripper_left"] = False
             environment["GripperStatus"]["gripper_left"] = False
     elif gripper_condition_left == True and gripper_condition_right == False:
@@ -178,6 +191,22 @@ def place(part_color):
         if part_color == "red":
             environment["PartsInKit"]["red_in_kit"] = parts_already_present + 1
             print(f"Parts of {part_color} remaining to be picked are: " + str(str(red_needed - parts_already_present - 1)))
-            # global yet_to_go_red = red_needed - parts_already_present - 1
             yet_to_go_red = red_needed - parts_already_present - 1
-    return yet_to_go_red
+            environment["GripperStatus"]["gripper_left"] = False
+        elif part_color == "green":
+            environment["PartsInKit"]["green_in_kit"] = parts_already_present + 1
+            print(f"Parts of {part_color} remaining to be picked are: " + str(str(red_needed - parts_already_present - 1)))
+            yet_to_go_green = green_needed - parts_already_present - 1
+            environment["GripperStatus"]["gripper_left"] = False
+        else:
+            environment["PartsInKit"]["blue_in_kit"] = parts_already_present + 1
+            print(f"Parts of {part_color} remaining to be picked are: " + str(str(red_needed - parts_already_present - 1)))
+            yet_to_go_red = blue_needed - parts_already_present - 1
+            environment["GripperStatus"]["gripper_left"] = False
+    environment["RobotLocation"]["at_tray"] = True
+    if part_color == "red":
+        return yet_to_go_red
+    elif part_color == "green":
+        return yet_to_go_green
+    else:
+        return yet_to_go_blue
