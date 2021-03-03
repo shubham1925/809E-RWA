@@ -28,7 +28,8 @@ while not(flag_red):
     taskplanning.move_to_tray()
     rem_red = taskplanning.place("red")
     # print("Baburao")
-    print("rem_red: " + str(rem_red))
+    # print("rem_red: " + str(rem_red))
+    print("\n")
     if rem_red == 0:
         print("Exit")
         flag_red = True
@@ -59,8 +60,14 @@ while not(flag_blue):
 if flag_red and flag_green and flag_blue:
     taskplanning.environment["KitStatus"]["kit_complete"] = True
 
-print("Parts remaining in red bin: " + str(taskplanning.environment["PartsInBins"]["red_parts"]))
-print("Parts remaining in green bin: " + str(taskplanning.environment["PartsInBins"]["green_parts"]))
-print("Parts remaining in blue bin: " + str(taskplanning.environment["PartsInBins"]["blue_parts"]))
+print("\n")
+
+print(f'Parts remaining in red bin: {taskplanning.environment["PartsInBins"]["red_parts"]}')
+print(f'Parts remaining in green bin: {taskplanning.environment["PartsInBins"]["green_parts"]}')
+print(f'Parts remaining in blue bin: {taskplanning.environment["PartsInBins"]["blue_parts"]}\n')
+
+print(f'Parts in red kit: {taskplanning.environment["PartsInKit"]["red_in_kit"]}')
+print(f'Parts in green kit: {taskplanning.environment["PartsInKit"]["green_in_kit"]}')
+print(f'Parts in blue kit: {taskplanning.environment["PartsInKit"]["blue_in_kit"]}\n')
 
 print(taskplanning.environment.items())
