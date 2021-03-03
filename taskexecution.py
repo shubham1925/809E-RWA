@@ -21,21 +21,19 @@ if taskplanning.blue_remaining <= 0:
     flag_blue = True
 
 # We will complete the kit in red, green blue order always
-while not(flag_red):
+while not flag_red:
     print(colored('Starting with red parts..', 'red'))
     taskplanning.move_to_bin()
     taskplanning.pick("red")
     taskplanning.move_to_tray()
     rem_red = taskplanning.place("red")
-    # print("Baburao")
-    # print("rem_red: " + str(rem_red))
     print("\n")
     if rem_red == 0:
         print("Exit")
         flag_red = True
     taskplanning.go_home()
 
-while not(flag_green):
+while not flag_green:
     print(colored('Starting with green parts..', 'green'))
     taskplanning.move_to_bin()
     taskplanning.pick("green")
@@ -46,7 +44,7 @@ while not(flag_green):
         flag_green = True
     taskplanning.go_home()
 
-while not(flag_blue):
+while not flag_blue:
     print(colored('Starting with blue parts..', 'blue'))
     taskplanning.move_to_bin()
     taskplanning.pick("blue")
