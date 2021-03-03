@@ -44,6 +44,7 @@ environment = {
     }
 }
 
+
 def go_home():
     # Set grippers to empty/false
     environment["GripperStatus"]["gripper_left"] = False
@@ -56,6 +57,7 @@ def go_home():
 
     print("Robot is now at home")
 
+
 def move_to_bin():
     # Pre-requisite
     robot_location = environment.get("RobotLocation").get("at_bin")
@@ -63,28 +65,30 @@ def move_to_bin():
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     kit_complete = environment.get("KitStatus").get("kit_complete")
 
-    #Effect
-    if gripper_condition_right == False and gripper_condition_left == False and kit_complete == False and \
+    # Effect
+    if gripper_condition_right is False and gripper_condition_left is False and kit_complete is False and \
             robot_location == False:
         environment["RobotLocation"]["at_bin"] = True
         environment["RobotLocation"]["at_home"] = False
         environment["RobotLocation"]["at_tray"] = False
         print("Robot moved to bin")
 
+
 def move_to_tray():
-    #Pre-requisite
+    # Pre-requisite
     robot_location = environment.get("RobotLocation").get("at_tray")
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     kit_complete = environment.get("KitStatus").get("kit_complete")
 
-    #Effect
-    if (gripper_condition_right == True or gripper_condition_left == True) and kit_complete == False and \
-        robot_location == False:
+    # Effect
+    if (gripper_condition_right is True or gripper_condition_left is True) and kit_complete is False and \
+            robot_location is False:
         environment["RobotLocation"]["at_bin"] = False
         environment["RobotLocation"]["at_home"] = False
         environment["RobotLocation"]["at_tray"] = True
         print("Robot moved to tray")
+
 
 def pick(part_color):
     # print("\n")
@@ -97,7 +101,7 @@ def pick(part_color):
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     robot_location = environment.get("RobotLocation").get("at_bin")
-    if robot_location == False:
+    if robot_location is False:
         # environment["RobotLocation"]["at_home"] = False
         # print("Robot not at home position\n")
         environment["RobotLocation"]["at_bin"] = True
@@ -151,7 +155,6 @@ def pick(part_color):
         print("Robot picked one part with left hand")
     # print("============================================================================================================")
     # print(gripper_condition_left, gripper_condition_right, robot_location, part_to_pick, kit_complete_condition)
-
 
 
 def place(part_color):
