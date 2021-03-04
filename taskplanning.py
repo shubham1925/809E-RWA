@@ -1,6 +1,19 @@
 red_in_bin, green_in_bin, blue_in_bin = map(int, input("Enter red, green, blue parts in bins: ").split())
+if red_in_bin < 0 or green_in_bin < 0 or blue_in_bin < 0:
+    print("Enter positive values for parts present in bin\n")
+    red_in_bin, green_in_bin, blue_in_bin = map(int, input("Enter red, green, blue parts in bins: ").split())
+
 red_in_kit, green_in_kit, blue_in_kit = map(int, input("Enter red, green, blue parts in kits present already: ").split())
+if red_in_kit < 0 or green_in_kit < 0 or blue_in_kit < 0:
+    print("Enter positive values for parts present in the kit\n")
+    red_in_kit, green_in_kit, blue_in_kit = map(int,
+                                                input("Enter red, green, blue parts in kits present already: ").split())
+
 red_needed, green_needed, blue_needed = map(int, input("Enter red, green, blue parts to place in kit tray: ").split())
+if red_needed < 0 or blue_needed < 0 or green_needed < 0:
+    print("Enter positive values for parts required in the kit\n")
+    red_needed, green_needed, blue_needed = map(int,
+                                                input("Enter red, green, blue parts to place in kit tray: ").split())
 
 red_remaining = red_needed - red_in_kit
 green_remaining = green_needed - green_in_kit
