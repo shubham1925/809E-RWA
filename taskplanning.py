@@ -59,6 +59,7 @@ environment = {
 
 
 def go_home():
+    """ Function to set the robot parameters to home condition"""
     # Set grippers to empty/false
     environment["GripperStatus"]["gripper_left"] = False
     environment["GripperStatus"]["gripper_right"] = False
@@ -72,6 +73,7 @@ def go_home():
 
 
 def move_to_bin():
+    """ Function to move the robot to the bin, by changing the RobotLocation parameters in the dictionary """
     # Pre-requisite
     robot_location = environment.get("RobotLocation").get("at_bin")
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
@@ -80,7 +82,7 @@ def move_to_bin():
 
     # Effect
     if gripper_condition_right is False and gripper_condition_left is False and kit_complete is False and \
-            robot_location == False:
+            robot_location is False:
         environment["RobotLocation"]["at_bin"] = True
         environment["RobotLocation"]["at_home"] = False
         environment["RobotLocation"]["at_tray"] = False
@@ -88,6 +90,7 @@ def move_to_bin():
 
 
 def move_to_tray():
+    """ Function to move the robot to the tray, by changing the RobotLocation parameters in the dictionary """
     # Pre-requisite
     robot_location = environment.get("RobotLocation").get("at_tray")
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
@@ -104,8 +107,7 @@ def move_to_tray():
 
 
 def pick(part_color):
-    # print("\n")
-    # print("============================================================================================================")
+    """ Function to pick the part of color specified by the variable part_color from the bin"""
     print("Robot moving to pick part")
     global red_remaining
     global green_remaining
@@ -166,16 +168,14 @@ def pick(part_color):
             environment["PartsInBins"]["blue_parts"] = part_to_pick - 1
             blue_remaining = blue_remaining - 1
         print("Robot picked one part with left hand")
-    # print("============================================================================================================")
-    # print(gripper_condition_left, gripper_condition_right, robot_location, part_to_pick, kit_complete_condition)
 
 
 def place(part_color):
+    """ Function to place the part in the kit, color is specified by variable part_color"""
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     robot_location = environment.get("RobotLocation").get("at_tray")
     kit_complete_condition = environment.get("KitStatus").get("kit_complete")
-    # print("============================================================================================================")
     if part_color == "red":
         parts_already_present = environment.get("PartsInKit").get("red_in_kit")
     elif part_color == "green":
