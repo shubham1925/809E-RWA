@@ -21,8 +21,14 @@ if taskplanning.blue_remaining <= 0:
     print("Blue parts already available in the tray, no need to pick up from bins")
     flag_blue = True
 
+counter_red = 0
+counter_green = 0
+counter_blue = 0
+
 while not flag_red:
-    print(colored('Starting with red parts..', 'red'))
+    if counter_red == 0:
+        print(colored('Starting with red parts..', 'red'))
+        counter_red = counter_red + 1
     taskplanning.move_to_bin()
     taskplanning.pick("red")
     taskplanning.move_to_tray()
@@ -33,21 +39,27 @@ while not flag_red:
     taskplanning.go_home()
 
 while not flag_green:
-    print(colored('Starting with green parts..', 'green'))
+    if counter_green == 0:
+        print(colored('Starting with green parts..', 'green'))
+        counter_green = counter_green + 1
     taskplanning.move_to_bin()
     taskplanning.pick("green")
     taskplanning.move_to_tray()
     rem_green = taskplanning.place("green")
+    print("\n")
     if rem_green == 0:
         flag_green = True
     taskplanning.go_home()
 
 while not flag_blue:
-    print(colored('Starting with blue parts..', 'blue'))
+    if counter_blue == 0:
+        print(colored('Starting with blue parts..', 'blue'))
+        counter_blue = counter_blue + 1
     taskplanning.move_to_bin()
     taskplanning.pick("blue")
     taskplanning.move_to_tray()
     rem_green = taskplanning.place("blue")
+    print("\n")
     if rem_green == 0:
         flag_blue = True
     taskplanning.go_home()
