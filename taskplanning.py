@@ -15,6 +15,8 @@ if red_needed < 0 or blue_needed < 0 or green_needed < 0:
     red_needed, green_needed, blue_needed = map(int,
                                                 input("Enter red, green, blue parts to place in kit tray: ").split())
 
+print("\n")
+
 red_remaining = red_needed - red_in_kit
 green_remaining = green_needed - green_in_kit
 blue_remaining = blue_needed - blue_in_kit
@@ -25,9 +27,13 @@ if red_remaining > red_in_bin or green_remaining > green_in_bin or blue_remainin
     print("Demand exceeds availability. Exiting..")
     exit()
 
-print(f"Red parts required: {red_remaining}")
-print(f"Green parts required: {green_remaining}")
-print(f"Blue parts required: {blue_remaining}")
+if red_remaining >= 0:
+    print(f"Red parts required: {red_remaining}")
+if green_remaining >= 0:
+    print(f"Green parts required: {green_remaining}")
+if blue_remaining >= 0:
+    print(f"Blue parts required: {blue_remaining}")
+print("\n")
 
 environment = {
     "RobotLocation": {
@@ -143,14 +149,13 @@ def pick(part_color):
             # Update parts in bins
             environment["PartsInBins"]["red_parts"] = part_to_pick - 2
             red_remaining = red_remaining - 2
-            # Update parts in kit
         elif part_color == "green":
             environment["PartsInBins"]["green_parts"] = part_to_pick - 2
             green_remaining = green_remaining - 2
         else:
             environment["PartsInBins"]["blue_parts"] = part_to_pick - 2
             blue_remaining = blue_remaining - 2
-        print("Robot picked 2 parts with both hands")
+        print(f"Robot picked 2 {part_color} parts with both hands")
         # print(f"Parts of {part_color} remaining to be picked: " + str(part_to_pick - 2))
     else:
         # If there is a single part to be picked up, we assume that it will picked up with the left gripper always
@@ -167,7 +172,7 @@ def pick(part_color):
         else:
             environment["PartsInBins"]["blue_parts"] = part_to_pick - 1
             blue_remaining = blue_remaining - 1
-        print("Robot picked one part with left hand")
+        print(f"Robot picked one {part_color} part with left hand")
 
 
 def place(part_color):
@@ -185,7 +190,7 @@ def place(part_color):
 
     if gripper_condition_right == True and gripper_condition_left == True:
         # Both hands are grasping some part
-        print("Robot placed the parts in kit")
+        print(f"Robot placed the {part_color} parts in kit")
         if part_color == "red":
             environment["PartsInKit"]["red_in_kit"] = parts_already_present + 2
             print(f"Parts of {part_color} remaining to be picked are: " + str(red_needed - parts_already_present - 2))
@@ -208,7 +213,7 @@ def place(part_color):
             environment["GripperStatus"]["gripper_left"] = False
             environment["GripperStatus"]["gripper_left"] = False
     elif gripper_condition_left == True and gripper_condition_right == False:
-        print("Robot placed the part in the kit")
+        print(f"Robot placed the {part_color} part in the kit")
         if part_color == "red":
             environment["PartsInKit"]["red_in_kit"] = parts_already_present + 1
             print(f"Parts of {part_color} remaining to be picked are: " + str(str(red_needed - parts_already_present - 1)))
