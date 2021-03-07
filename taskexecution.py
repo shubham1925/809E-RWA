@@ -1,10 +1,10 @@
 import taskplanning
-from termcolor import colored
+
 
 # Initialize robot at the home position
 taskplanning.go_home()
 
-# Set the color completion flags to False
+# Set the part completion flags to False
 flag_red = False
 flag_green = False
 flag_blue = False
@@ -21,13 +21,26 @@ if taskplanning.blue_remaining <= 0:
     print("Blue parts already available in the tray, no need to pick up from bins")
     flag_blue = True
 
+
+def print_red(s):
+    print("\033[91m{}\033[00m" .format(s))
+
+
+def print_green(s):
+    print("\033[92m{}\033[00m" .format(s))
+
+
+def print_blue(s):
+    print("\033[96m{}\033[00m" .format(s))
+
+
 counter_red = 0
 counter_green = 0
 counter_blue = 0
 
 while not flag_red:
     if counter_red == 0:
-        print(colored('Starting with red parts..', 'red'))
+        print_red("Starting with red parts..")
         counter_red = counter_red + 1
     taskplanning.move_to_bin()
     taskplanning.pick("red")
@@ -36,11 +49,10 @@ while not flag_red:
     print("\n")
     if rem_red == 0:
         flag_red = True
-    taskplanning.go_home()
 
 while not flag_green:
     if counter_green == 0:
-        print(colored('Starting with green parts..', 'green'))
+        print_green("Starting with green parts..")
         counter_green = counter_green + 1
     taskplanning.move_to_bin()
     taskplanning.pick("green")
@@ -49,11 +61,10 @@ while not flag_green:
     print("\n")
     if rem_green == 0:
         flag_green = True
-    taskplanning.go_home()
 
 while not flag_blue:
     if counter_blue == 0:
-        print(colored('Starting with blue parts..', 'blue'))
+        print_blue("Starting with blue parts..")
         counter_blue = counter_blue + 1
     taskplanning.move_to_bin()
     taskplanning.pick("blue")
@@ -62,12 +73,11 @@ while not flag_blue:
     print("\n")
     if rem_green == 0:
         flag_blue = True
-    taskplanning.go_home()
 
 if flag_red and flag_green and flag_blue:
     taskplanning.environment["KitStatus"]["kit_complete"] = True
 
-print("\n")
+print("Summary")
 
 print(f'Parts remaining in red bin: {taskplanning.environment["PartsInBins"]["red_parts"]}')
 print(f'Parts remaining in green bin: {taskplanning.environment["PartsInBins"]["green_parts"]}')
