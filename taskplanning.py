@@ -52,11 +52,13 @@ environment = {
         "kit_complete": False
     },
     "PartsInBins": {
+        # Key value pairs to keep track of parts in the bin
         "red_parts": red_in_bin,
         "green_parts": green_in_bin,
         "blue_parts": blue_in_bin
     },
     "PartsInKit": {
+        # Key value pairs to keep track of parts in kit
         "red_in_kit": red_in_kit,
         "green_in_kit": green_in_kit,
         "blue_in_kit": blue_in_kit
@@ -80,13 +82,11 @@ def go_home():
 
 def move_to_bin():
     """ Function to move the robot to the bin, by changing the RobotLocation parameters in the dictionary """
-    # Pre-requisite
     robot_location = environment.get("RobotLocation").get("at_bin")
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     kit_complete = environment.get("KitStatus").get("kit_complete")
 
-    # Effect
     if gripper_condition_right is False and gripper_condition_left is False and kit_complete is False and \
             robot_location is False:
         environment["RobotLocation"]["at_bin"] = True
@@ -97,13 +97,11 @@ def move_to_bin():
 
 def move_to_tray():
     """ Function to move the robot to the tray, by changing the RobotLocation parameters in the dictionary """
-    # Pre-requisite
     robot_location = environment.get("RobotLocation").get("at_tray")
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     kit_complete = environment.get("KitStatus").get("kit_complete")
 
-    # Effect
     if (gripper_condition_right is True or gripper_condition_left is True) and kit_complete is False and \
             robot_location is False:
         environment["RobotLocation"]["at_bin"] = False
@@ -118,7 +116,6 @@ def pick(part_color):
     global red_remaining
     global green_remaining
     global blue_remaining
-    # Pre-requisites
     gripper_condition_left = environment.get("GripperStatus").get("gripper_left")
     gripper_condition_right = environment.get("GripperStatus").get("gripper_right")
     robot_location = environment.get("RobotLocation").get("at_bin")
