@@ -1,0 +1,73 @@
+#!/usr/bin/env python
+
+import rospy
+import math
+import sys
+import tf
+from geometry_msgs.msg import PoseWithCovarianceStamped
+from location_recorder.srv import RoomPose, RoomPoseResponse
+
+import yaml
+from collections import OrderedDict
+
+room_location = " "
+
+# List for storing the rooms and their positions
+all_dicts = []
+i = 0
+flag = 0
+# Ordered dictionary that contains the room name and the amcl pose of the robot
+dict_odom = OrderedDict([("room", "Empty"), ("position", OrderedDict([("x", 0.0), ("y", 0.0), ("z", 0.0)])), ("orientation", OrderedDict([("x", 0.0), ("y", 0.0), ("z", 0.0), ("w", 0.0)]))])
+
+
+def ordered_dict_representer(self, value):  
+    return self.represent_mapping('tag:yaml.org,2002:map', value.items())
+
+
+yaml.add_representer(OrderedDict, ordered_dict_representer)
+
+
+# Callback that will be executed when subscriber is called
+def sub_callback(data):
+    global room_location
+    global dict_odom
+    dict_odom['position']['x'] = data.pose.pose.position.x
+    dict_odom['position']['y'] = data.pose.pose.position.y
+    dict_odom['position']['z'] = data.pose.pose.position.z
+    dict_odom['orientation']['x'] = data.pose.pose.orientation.x
+    dict_odom['orientation']['y'] = data.pose.pose.orientation.y
+    dict_odom['orientation']['z'] = data.pose.pose.orientation.z
+    dict_odom['orientation']['w'] = data.pose.pose.orientation.w
+
+
+# Callback that will be executed when the service is called
+def srv_callback(ip):
+	global room_location
+	room_location = ip.RoomLabel
+	global dict_odom
+	global all_dicts
+	all_dicts.append(dict_odom)
+	# Assign room location to the new entry in the list
+	all_dicts[-1]['room'] = room_location
+	with open(r'/home/shubham/catkin_ws/src/rwa3_packages/location_recorder/records/location_recorder.yaml', 'w') as file:
+		yaml.dump(all_dicts, file, sort_keys=False, default_flow_style=False)
+		dict_odom = OrderedDict([("room", "Empty"), ("position", OrderedDict([("x", 0.0), ("y", 0.0), ("z", 0.0)])),
+								 ("orientation", OrderedDict([("x", 0.0), ("y", 0.0), ("z", 0.0), ("w", 0.0)]))])
+	return RoomPoseResponse("Pose written to yaml file")
+	
+
+def get_room_pose():
+	global flag
+	rospy.init_node("room_location")
+	rospy.Subscriber("amcl_pose", PoseWithCovarianceStamped, sub_callback)
+	s = rospy.Service("room_service", RoomPose, srv_callback)
+	flag = 0
+	rospy.spin()
+
+
+if __name__=="__main__":
+	get_room_pose()
+
+
+
+

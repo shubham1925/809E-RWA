@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="world_name" default="$(find aws_robomaker_small_house_world)/worlds/small_house.world" />
+  <arg name="model" default="waffle" />
+  <arg name="x" default="3.831436" />
+  <arg name="y" default="-1.234452" />
+  <arg name="yaw" default="0.0" />
+  <arg name="map_file" default="$(find mapping)/maps/small_house_map.yaml" />
+  <arg name="rviz_config" default="$(find mapping)/rviz/navigation.rviz" />
+
+  <!-- Launch turtlebot3 bringup -->
+  <include file="$(find mapping)/launch/bringup.launch">
+    <arg name="world_name" value="$(arg world_name)" />
+    <arg name="model" value="$(arg model)" />
+    <arg name="x" value="$(arg x)" />
+    <arg name="y" value="$(arg y)" />
+    <arg name="yaw" value="$(arg yaw)" />
+    <arg name="rviz_config" value="$(arg rviz_config)" />
+  </include>
+
+  <!-- Start map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- Start localization -->
+  <include file="$(find mapping)/launch/start_amcl.launch">
+    <arg name="initial_pose_x" value="$(arg x)" />
+    <arg name="initial_pose_y" value="$(arg y)" />
+    <arg name="initial_pose_a" value="$(arg yaw)" />
+  </include>
+
+<!--  Start navigation-->
+  <include file="$(find turtlebot3_navigation)/launch/move_base.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+<!--Launch room_recorder-->
+  <node name="room_location" type="room_recorder" pkg="location_recorder" />
+</launch>
