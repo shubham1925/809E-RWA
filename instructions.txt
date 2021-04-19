@@ -1,7 +1,0 @@
-To run the program:
-Run taskexecution.py file in Pycharm.
-Enter the values as prompted in the terminal
-
-References:
-1. https://www.geeksforgeeks.org/print-colors-python-terminal/
-
