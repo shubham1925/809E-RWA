@@ -1,0 +1,14 @@
+RWA2 Instructions
+
+NOTE:
+1. Route taken may not be the shortest.
+2. Reaching a goal may take lot of time.
+3. Robot might pass too close to an obstacle without collision.
+
+Run:
+Terminal 1-
+  export TURTLEBOT3_MODEL=burger
+  roslaunch turtlebot3_gazebo turtlebot3_world.launch x_pos:=-2.0 y_pos:=0.0
+
+Terminal 2:
+  rosrun rwa2_sonawane my_bot_controller x (where x is a value in [0,5])
